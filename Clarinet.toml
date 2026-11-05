@@ -1,0 +1,31 @@
+[project]
+name = "nedex-locker"
+description = "NEDeX SIP-010 time-lock + general locker v0 (research/pilot; not audited)"
+authors = ["Stacks.Btc.bot / Tscipden"]
+telemetry = false
+cache_dir = "./.cache"
+
+[contracts.sip-010-trait]
+path = "contracts/sip-010-trait.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.sip010-ft]
+path = "contracts/sip010-ft.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.sip010-ft-b]
+path = "contracts/sip010-ft-b.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.nedex-timelock]
+path = "contracts/nedex-timelock.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.nedex-locker-v0]
+path = "contracts/nedex-locker-v0.clar"
+clarity_version = 2
+epoch = "2.5"

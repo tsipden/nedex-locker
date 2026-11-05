@@ -1,0 +1,12 @@
+node_modules/
+.cache/
+coverage/
+*.log
+.env
+.env.*
+!.env.example
+.DS_Store
+*.pem
+*.key
+id_rsa*
+mnemonic*

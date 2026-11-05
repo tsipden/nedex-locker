@@ -1,0 +1,221 @@
+{
+  "version": "v3-original-ladder-tweaks-applied",
+  "supersedes": "v2-reversed-ladder",
+  "reversal_status": "REJECTED \u2014 superseded by original amounts + approved height tweaks",
+  "reference_burn_height": 974688,
+  "reference_time_america_chicago": "2026-11-05T11:32:15-06:00",
+  "reference_source": "Hiro GET /extended/v1/block?limit=1 (burn_block_height / burn_block_time_iso)",
+  "beneficiary": "SP1KNRNZET8ZC5Q9P6F1FFW8YQH45CKMNY132B36S",
+  "token": "SP1KNRNZET8ZC5Q9P6F1FFW8YQH45CKMNY132B36S.ned2gsk-bonding-curve",
+  "same_time_signing": true,
+  "signing_order_note": "Create in this order in one session: 10M@230mo \u2192 4M@2y \u2192 3M@1y \u2192 2M@230d \u2192 1M@230h",
+  "block_model": {
+    "bitcoin_minutes_per_block": 10,
+    "blocks_per_hour": 6,
+    "blocks_per_day": 144,
+    "blocks_per_year": 52596
+  },
+  "applied_tweaks": [
+    {
+      "lock": "L4_230d",
+      "unlock_burn_height": 1000000,
+      "effect": "~54 days earlier than natural 230-day delta"
+    },
+    {
+      "lock": "L1_230mo",
+      "unlock_burn_height": 2000000,
+      "effect": "~4 months later than natural 230-month delta"
+    }
+  ],
+  "schedule": [
+    {
+      "id": "L1_230mo",
+      "label": "230 months",
+      "amount_nedex": 10000000,
+      "amount_micro": "10000000000000",
+      "delta_burn_blocks": 1025312,
+      "unlock_burn_height": 2000000,
+      "eta_america_chicago": "2046-05-04T16:52:15-05:00",
+      "eta_date": "2046-05-04",
+      "eta_weekday": "Friday",
+      "eta_local_time": "4:52 PM CDT",
+      "pox_mod_2100": 800,
+      "pox_blocks_to_boundary": -800,
+      "blocks_vs_btc_halving5_1050000": 950000,
+      "height_tweak": "absolute_landmark",
+      "tweak_note": "Unlock fixed at Bitcoin burn block 2,000,000 (approved publicity tweak; ~4 months later than natural 230mo)."
+    },
+    {
+      "id": "L2_2y",
+      "label": "2 years",
+      "amount_nedex": 4000000,
+      "amount_micro": "4000000000000",
+      "delta_burn_blocks": 105192,
+      "unlock_burn_height": 1079880,
+      "eta_america_chicago": "2028-11-04T23:32:15-05:00",
+      "eta_date": "2028-11-04",
+      "eta_weekday": "Saturday",
+      "eta_local_time": "11:32 PM CDT",
+      "pox_mod_2100": 480,
+      "pox_blocks_to_boundary": -480,
+      "blocks_vs_btc_halving5_1050000": 29880
+    },
+    {
+      "id": "L3_1y",
+      "label": "1 year",
+      "amount_nedex": 3000000,
+      "amount_micro": "3000000000000",
+      "delta_burn_blocks": 52596,
+      "unlock_burn_height": 1027284,
+      "eta_america_chicago": "2027-11-05T17:32:15-05:00",
+      "eta_date": "2027-11-05",
+      "eta_weekday": "Friday",
+      "eta_local_time": "5:32 PM CDT",
+      "pox_mod_2100": 384,
+      "pox_blocks_to_boundary": -384,
+      "blocks_vs_btc_halving5_1050000": -22716
+    },
+    {
+      "id": "L4_230d",
+      "label": "230 days",
+      "amount_nedex": 2000000,
+      "amount_micro": "2000000000000",
+      "delta_burn_blocks": 25312,
+      "unlock_burn_height": 1000000,
+      "eta_america_chicago": "2027-04-30T06:12:15-05:00",
+      "eta_date": "2027-04-30",
+      "eta_weekday": "Friday",
+      "eta_local_time": "6:12 AM CDT",
+      "pox_mod_2100": 400,
+      "pox_blocks_to_boundary": -400,
+      "blocks_vs_btc_halving5_1050000": -50000,
+      "height_tweak": "absolute_landmark",
+      "tweak_note": "Unlock fixed at Bitcoin burn block 1,000,000 (approved publicity tweak; ~54 days earlier than natural 230d)."
+    },
+    {
+      "id": "L5_230h",
+      "label": "230 hours",
+      "amount_nedex": 1000000,
+      "amount_micro": "1000000000000",
+      "delta_burn_blocks": 1380,
+      "unlock_burn_height": 976068,
+      "eta_america_chicago": "2026-11-15T01:32:15-06:00",
+      "eta_date": "2026-11-15",
+      "eta_weekday": "Sunday",
+      "eta_local_time": "1:32 AM CST",
+      "pox_mod_2100": 1668,
+      "pox_blocks_to_boundary": 432,
+      "blocks_vs_btc_halving5_1050000": -73932
+    }
+  ],
+  "total_nedex_locked_planned": 20000000,
+  "create_lock_calls": [
+    {
+      "lock_plan_id": "L1_230mo",
+      "sign_order": 1,
+      "contract_to_deploy_then_call": "nedex-timelock (NOT YET DEPLOYED)",
+      "function": "create-lock",
+      "sender_must_be": "SP1KNRNZET8ZC5Q9P6F1FFW8YQH45CKMNY132B36S",
+      "same_time_batch": true,
+      "args": {
+        "token": "SP1KNRNZET8ZC5Q9P6F1FFW8YQH45CKMNY132B36S.ned2gsk-bonding-curve",
+        "amount": 10000000000000,
+        "unlock-burn-height": 2000000,
+        "beneficiary": "SP1KNRNZET8ZC5Q9P6F1FFW8YQH45CKMNY132B36S"
+      },
+      "notes": "Sign all five in one session (order L1\u2192L5). Landmark unlock is absolute \u2014 keep 1,000,000 / 2,000,000 even if tip moves."
+    },
+    {
+      "lock_plan_id": "L2_2y",
+      "sign_order": 2,
+      "contract_to_deploy_then_call": "nedex-timelock (NOT YET DEPLOYED)",
+      "function": "create-lock",
+      "sender_must_be": "SP1KNRNZET8ZC5Q9P6F1FFW8YQH45CKMNY132B36S",
+      "same_time_batch": true,
+      "args": {
+        "token": "SP1KNRNZET8ZC5Q9P6F1FFW8YQH45CKMNY132B36S.ned2gsk-bonding-curve",
+        "amount": 4000000000000,
+        "unlock-burn-height": 1079880,
+        "beneficiary": "SP1KNRNZET8ZC5Q9P6F1FFW8YQH45CKMNY132B36S"
+      },
+      "notes": "Sign all five in one session (order L1\u2192L5). Recompute unlock = live_burn + delta if tip moved."
+    },
+    {
+      "lock_plan_id": "L3_1y",
+      "sign_order": 3,
+      "contract_to_deploy_then_call": "nedex-timelock (NOT YET DEPLOYED)",
+      "function": "create-lock",
+      "sender_must_be": "SP1KNRNZET8ZC5Q9P6F1FFW8YQH45CKMNY132B36S",
+      "same_time_batch": true,
+      "args": {
+        "token": "SP1KNRNZET8ZC5Q9P6F1FFW8YQH45CKMNY132B36S.ned2gsk-bonding-curve",
+        "amount": 3000000000000,
+        "unlock-burn-height": 1027284,
+        "beneficiary": "SP1KNRNZET8ZC5Q9P6F1FFW8YQH45CKMNY132B36S"
+      },
+      "notes": "Sign all five in one session (order L1\u2192L5). Recompute unlock = live_burn + delta if tip moved."
+    },
+    {
+      "lock_plan_id": "L4_230d",
+      "sign_order": 4,
+      "contract_to_deploy_then_call": "nedex-timelock (NOT YET DEPLOYED)",
+      "function": "create-lock",
+      "sender_must_be": "SP1KNRNZET8ZC5Q9P6F1FFW8YQH45CKMNY132B36S",
+      "same_time_batch": true,
+      "args": {
+        "token": "SP1KNRNZET8ZC5Q9P6F1FFW8YQH45CKMNY132B36S.ned2gsk-bonding-curve",
+        "amount": 2000000000000,
+        "unlock-burn-height": 1000000,
+        "beneficiary": "SP1KNRNZET8ZC5Q9P6F1FFW8YQH45CKMNY132B36S"
+      },
+      "notes": "Sign all five in one session (order L1\u2192L5). Landmark unlock is absolute \u2014 keep 1,000,000 / 2,000,000 even if tip moves."
+    },
+    {
+      "lock_plan_id": "L5_230h",
+      "sign_order": 5,
+      "contract_to_deploy_then_call": "nedex-timelock (NOT YET DEPLOYED)",
+      "function": "create-lock",
+      "sender_must_be": "SP1KNRNZET8ZC5Q9P6F1FFW8YQH45CKMNY132B36S",
+      "same_time_batch": true,
+      "args": {
+        "token": "SP1KNRNZET8ZC5Q9P6F1FFW8YQH45CKMNY132B36S.ned2gsk-bonding-curve",
+        "amount": 1000000000000,
+        "unlock-burn-height": 976068,
+        "beneficiary": "SP1KNRNZET8ZC5Q9P6F1FFW8YQH45CKMNY132B36S"
+      },
+      "notes": "Sign all five in one session (order L1\u2192L5). Recompute unlock = live_burn + delta if tip moved."
+    }
+  ],
+  "coincidences": {
+    "weekdays": {
+      "Friday": 3,
+      "Saturday": 1,
+      "Sunday": 1
+    },
+    "notes": [
+      "L1 (230mo), L3 (1y), and L4 (230d) all Friday",
+      "L3 unlock is exact 1-year anniversary of reference timestamp (Fri 2027-11-05)",
+      "L4 unlock lands exactly on round Bitcoin burn block 1,000,000",
+      "L1 unlock lands exactly on round Bitcoin burn block 2,000,000",
+      "BTC halving #5 at burn 1,050,000 (~2028); L2 (2y) unlock 1,079,880 is +29,880 blocks after (~207.5 days later)",
+      "None land exactly on a PoX 2100-block cycle boundary"
+    ]
+  },
+  "btc_halving5": {
+    "burn_height": 1050000,
+    "nearest_lock": "L2_2y",
+    "lock_unlock": 1079880,
+    "blocks_after_halving": 29880,
+    "approx_days_after_halving": 207.5,
+    "note": "2-year anniversary kept; not moved onto the halving block."
+  },
+  "re_lock_renewal": {
+    "in_contract_extend": false,
+    "flow": [
+      "claim after unlock",
+      "create-lock again with new height",
+      "publish lock-id"
+    ]
+  },
+  "sign_warning": "NOT DEPLOYED. No bondai keys in bot. No mainnet actions from this plan alone."
+}
