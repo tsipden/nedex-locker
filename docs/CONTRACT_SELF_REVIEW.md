@@ -5,7 +5,11 @@
 - No contract-owner / admin withdraw path
 - Unlock height must be strictly future and ≤ burn-height + 2_000_000
 - Zero-amount rejected
-- Claim marks `claimed` before FT transfer (blocks simple double-claim)
+- Claim marks `claimed` before FT transfer (blocks simple double-claim). A token `(err)` rolls that mark back.
+- Create and claim require an exact SIP-010 balance delta of `amount`
+- Deposit is direct-call only (`tx-sender` == `contract-caller`)
+- Claim and `burn-lock` authorize `contract-caller`, not `tx-sender`
+- Beneficiary cannot be the locker contract itself
 - Claim requires matching token principal + beneficiary
 - Depositor lock-id list capped at 50
 - Events printed for indexers
@@ -14,7 +18,7 @@
 
 1. **Not audited** — treat as research until independent Clarity review.
 2. **Token trait trust** — malicious SIP-010 could reenter or lie; prefer known NEDeX principal allowlist in a v1.1.
-3. **Claim transfer failure after claimed=true** — funds stuck marked claimed (prefer try transfer then mark, or recovery path carefully designed). Current order prioritizes double-claim safety; auditors should weigh tradeoff / add rescue-only-by-beneficiary after failed transfer.
+3. **Claim transfer `(err)` after `claimed=true`** — not sticky. Clarinet tests show the whole transaction rolls back and the same lock can be claimed later. A transfer that returns `(ok)` but does not credit the beneficiary is rejected by the balance check and also rolls back.
 4. **No pause / no upgrade** — immutable; bugs are permanent (desired for trust, costly if wrong).
 5. **Burn-height vs Stacks height confusion** — docs must stress Bitcoin burn blocks.
 6. **MAX-LOCK-DURATION** — 230 months fits; changing constant later needs new deploy.

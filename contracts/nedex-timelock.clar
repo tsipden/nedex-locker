@@ -17,6 +17,11 @@
 (define-constant ERR-OVERFLOW u109)
 (define-constant ERR-TOO-MANY-LOCKS u110)
 (define-constant ERR-BAD-RANGE u111)
+(define-constant ERR-BAD-TRANSFER u113)
+(define-constant ERR-BAD-BENEFICIARY u114)
+;; Signer must be the direct caller. An intermediary would otherwise escrow
+;; tx-sender's tokens for a beneficiary the signer did not choose.
+(define-constant ERR-NOT-DIRECT u115)
 
 ;; ~38 years of Bitcoin blocks at 144/day; covers 230-month schedule with headroom
 (define-constant MAX-LOCK-DURATION-BLOCKS u2000000)
@@ -131,14 +136,25 @@
       (lock-id (var-get next-lock-id))
       (token-principal (contract-of token))
       (max-unlock (+ burn-block-height MAX-LOCK-DURATION-BLOCKS))
+      (escrow (as-contract tx-sender))
     )
+    ;; Direct call only. Contract depositors must as-contract so they are
+    ;; tx-sender; an intermediary cannot pull the signer's balance.
+    (asserts! (is-eq tx-sender contract-caller) (err ERR-NOT-DIRECT))
     (asserts! (> amount u0) (err ERR-ZERO-AMOUNT))
     (asserts! (> unlock-burn-height burn-block-height) (err ERR-UNLOCK-NOT-FUTURE))
     (asserts! (>= max-unlock burn-block-height) (err ERR-OVERFLOW))
     (asserts! (<= unlock-burn-height max-unlock) (err ERR-HEIGHT-TOO-FAR))
     (asserts! (> (+ lock-id u1) lock-id) (err ERR-OVERFLOW))
+    (asserts! (not (is-eq beneficiary escrow)) (err ERR-BAD-BENEFICIARY))
     (try! (track-depositor-lock tx-sender lock-id))
-    (try! (contract-call? token transfer amount tx-sender (as-contract tx-sender) none))
+    (let ((bal-before (unwrap! (contract-call? token get-balance escrow) (err ERR-BAD-TRANSFER))))
+      (try! (contract-call? token transfer amount tx-sender escrow none))
+      (let ((bal-after (unwrap! (contract-call? token get-balance escrow) (err ERR-BAD-TRANSFER))))
+        (asserts! (>= bal-after bal-before) (err ERR-BAD-TRANSFER))
+        (asserts! (is-eq (- bal-after bal-before) amount) (err ERR-BAD-TRANSFER))
+      )
+    )
     (map-set locks lock-id {
       depositor: tx-sender,
       beneficiary: beneficiary,
@@ -171,9 +187,17 @@
     (asserts! (not (get claimed lock-data)) (err ERR-ALREADY-CLAIMED))
     (asserts! (is-eq token-principal (get token lock-data)) (err ERR-WRONG-TOKEN))
     (asserts! (>= burn-block-height (get unlock-burn-height lock-data)) (err ERR-TOO-EARLY))
-    (asserts! (is-eq tx-sender beneficiary) (err ERR-NOT-BENEFICIARY))
+    ;; contract-caller, not tx-sender: the beneficiary may be a contract, and a
+    ;; token callback or intermediary must not pass as the signer.
+    (asserts! (is-eq contract-caller beneficiary) (err ERR-NOT-BENEFICIARY))
     (map-set locks lock-id (merge lock-data { claimed: true }))
-    (try! (as-contract (contract-call? token transfer amount tx-sender beneficiary none)))
+    (let ((bal-before (unwrap! (contract-call? token get-balance beneficiary) (err ERR-BAD-TRANSFER))))
+      (try! (as-contract (contract-call? token transfer amount tx-sender beneficiary none)))
+      (let ((bal-after (unwrap! (contract-call? token get-balance beneficiary) (err ERR-BAD-TRANSFER))))
+        (asserts! (>= bal-after bal-before) (err ERR-BAD-TRANSFER))
+        (asserts! (is-eq (- bal-after bal-before) amount) (err ERR-BAD-TRANSFER))
+      )
+    )
     (print {
       event: "nedex-timelock-claim",
       lock-id: lock-id,

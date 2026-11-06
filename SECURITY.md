@@ -34,11 +34,13 @@ We will acknowledge within a few business days when reachable.
 
 See `docs/CONTRACT_SELF_REVIEW.md`. Highlights:
 
-1. Claim marks `claimed` before the FT transfer (double-claim safety vs stuck-funds tradeoff).
-2. Trust in the SIP-010 trait implementation passed by the caller.
-3. No pause / upgrade path (immutable by design).
-4. Unlock heights use **Bitcoin burn blocks**, not Stacks block height.
-5. Depositor lock-id list capped at 50; not pruned after claim.
+1. A SIP-010 that lies in both `transfer` and `get-balance` (reporting exactly the escrowed delta) is still accepted. The balance check stops no-op, short, and redirecting tokens whose `get-balance` is honest.
+2. No pause / upgrade path (immutable by design).
+3. Unlock heights use **Bitcoin burn blocks**, not Stacks block height.
+4. Depositor lock-id list capped at 50; not pruned after claim.
+5. `nedex-locker-v0` still has no max-duration cap (timelock does).
+
+An `(err)` from the token during `claim` rolls back `claimed`. The earlier note that a failed transfer leaves the lock marked claimed does not hold for response errors.
 
 ## Keys
 
