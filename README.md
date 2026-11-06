@@ -43,7 +43,7 @@ npm ci
 npm test
 ```
 
-Expect **11** passing tests (timelock + locker-v0). Clarinet SDK / simnet is pulled via `@stacks/clarinet-sdk` and `vitest-environment-clarinet`.
+`npm test` runs the original timelock and locker-v0 cases and the adversarial suite in `tests/adversarial.test.ts`. Results by bug class: [`docs/ADVERSARIAL_TESTS.md`](docs/ADVERSARIAL_TESTS.md). Clarinet SDK / simnet is pulled via `@stacks/clarinet-sdk` and `vitest-environment-clarinet`.
 
 ## Spec & security
 

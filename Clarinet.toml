@@ -29,3 +29,28 @@ epoch = "2.5"
 path = "contracts/nedex-locker-v0.clar"
 clarity_version = 2
 epoch = "2.5"
+
+[contracts.test-misbehaving-ft]
+path = "contracts/test-misbehaving-ft.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.test-malicious-caller]
+path = "contracts/test-malicious-caller.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.test-undo-extension]
+path = "contracts/test-undo-extension.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.test-beneficiary-vault]
+path = "contracts/test-beneficiary-vault.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.test-batch-lock]
+path = "contracts/test-batch-lock.clar"
+clarity_version = 2
+epoch = "2.5"

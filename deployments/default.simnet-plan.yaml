@@ -4,43 +4,43 @@ network: simnet
 genesis:
   wallets:
   - name: deployer
-    address: ST2F09VT49YJZ6H6EAFZN6801DNXVCPGHAKCFYD3N
+    address: ST3ESTV0QZVAHXA87T3D61XPBTGP9Y5MCCR07EES
     balance: '100000000000000'
     sbtc-balance: '1000000000'
   - name: faucet
-    address: STHKX6370PCFZMBVF9PPD6PKW65DSTEA28E97SE3
+    address: ST1RF134K9YY4BQCF851WV7GZ47FV65MTE6XN8K4B
     balance: '100000000000000'
     sbtc-balance: '1000000000'
   - name: wallet_1
-    address: ST3174JW2GJ0M2PZN5PT60J1EA102WVTQ4CKMMPYS
+    address: ST350ZJGPNA3A23HHD5R86HKMY7KMFKD8TKZ2P5AG
     balance: '100000000000000'
     sbtc-balance: '1000000000'
   - name: wallet_2
-    address: ST3WVFF62WCFGHGR5W7R73PS7K237HQG3VWTSX5Z4
+    address: ST2433FRCM0A088F3GZ0RB288A7SNZCCZ9K42ANWN
     balance: '100000000000000'
     sbtc-balance: '1000000000'
   - name: wallet_3
-    address: ST1PEVC22FTFXX9MW5CKGYMGDSPK2YSVB6M5KCZ9D
+    address: STTHPNT9XM9H79N2MENSZZHCNDY5H5HF6ZM8SM3N
     balance: '100000000000000'
     sbtc-balance: '1000000000'
   - name: wallet_4
-    address: ST24A2VQY5CGZYRNBC0A9CE8D2E69VKMWHHDRWSVC
+    address: ST2MJ8NBDDQCD9292X74NPYM83DSEN4K19GTN4Z5E
     balance: '100000000000000'
     sbtc-balance: '1000000000'
   - name: wallet_5
-    address: STW5B8MCQC5MFJS1SSHY7TCXWSM20WHS01BKV5A4
+    address: ST2SVRSRKFGQ2Q685PX54MXG9HF42448GAAKWRGGS
     balance: '100000000000000'
     sbtc-balance: '1000000000'
   - name: wallet_6
-    address: ST3FRJWJKPW0KX98GPHWA4F0MR04ES76AN0FTQP87
+    address: STGR26CS8PQE9TVRW4VNPKNT4YJKFJP4YQ4EN958
     balance: '100000000000000'
     sbtc-balance: '1000000000'
   - name: wallet_7
-    address: ST2TVYRNF73QF5RGQRAJ2Q4C6P6QHQAM2D2SQZ7V0
+    address: STN4R3ZH92QYKFEATW14FNDKG2HD7829J04Y8Y6
     balance: '100000000000000'
     sbtc-balance: '1000000000'
   - name: wallet_8
-    address: ST26DYECQ46JJPAQPXTKJ7FKF0N5R7V776E5XWJ5P
+    address: ST2NMFFXW3BFBJNX47WRTBYVEV1J07R3FWXHYTG25
     balance: '100000000000000'
     sbtc-balance: '1000000000'
   contracts:
@@ -65,27 +65,52 @@ plan:
     transactions:
     - transaction-type: emulated-contract-publish
       contract-name: sip-010-trait
-      emulated-sender: ST2F09VT49YJZ6H6EAFZN6801DNXVCPGHAKCFYD3N
+      emulated-sender: ST3ESTV0QZVAHXA87T3D61XPBTGP9Y5MCCR07EES
       path: contracts/sip-010-trait.clar
       clarity-version: 2
     - transaction-type: emulated-contract-publish
       contract-name: nedex-locker-v0
-      emulated-sender: ST2F09VT49YJZ6H6EAFZN6801DNXVCPGHAKCFYD3N
+      emulated-sender: ST3ESTV0QZVAHXA87T3D61XPBTGP9Y5MCCR07EES
       path: contracts/nedex-locker-v0.clar
       clarity-version: 2
     - transaction-type: emulated-contract-publish
       contract-name: nedex-timelock
-      emulated-sender: ST2F09VT49YJZ6H6EAFZN6801DNXVCPGHAKCFYD3N
+      emulated-sender: ST3ESTV0QZVAHXA87T3D61XPBTGP9Y5MCCR07EES
       path: contracts/nedex-timelock.clar
       clarity-version: 2
     - transaction-type: emulated-contract-publish
       contract-name: sip010-ft
-      emulated-sender: ST2F09VT49YJZ6H6EAFZN6801DNXVCPGHAKCFYD3N
+      emulated-sender: ST3ESTV0QZVAHXA87T3D61XPBTGP9Y5MCCR07EES
       path: contracts/sip010-ft.clar
       clarity-version: 2
     - transaction-type: emulated-contract-publish
       contract-name: sip010-ft-b
-      emulated-sender: ST2F09VT49YJZ6H6EAFZN6801DNXVCPGHAKCFYD3N
+      emulated-sender: ST3ESTV0QZVAHXA87T3D61XPBTGP9Y5MCCR07EES
       path: contracts/sip010-ft-b.clar
+      clarity-version: 2
+    - transaction-type: emulated-contract-publish
+      contract-name: test-batch-lock
+      emulated-sender: ST3ESTV0QZVAHXA87T3D61XPBTGP9Y5MCCR07EES
+      path: contracts/test-batch-lock.clar
+      clarity-version: 2
+    - transaction-type: emulated-contract-publish
+      contract-name: test-beneficiary-vault
+      emulated-sender: ST3ESTV0QZVAHXA87T3D61XPBTGP9Y5MCCR07EES
+      path: contracts/test-beneficiary-vault.clar
+      clarity-version: 2
+    - transaction-type: emulated-contract-publish
+      contract-name: test-malicious-caller
+      emulated-sender: ST3ESTV0QZVAHXA87T3D61XPBTGP9Y5MCCR07EES
+      path: contracts/test-malicious-caller.clar
+      clarity-version: 2
+    - transaction-type: emulated-contract-publish
+      contract-name: test-misbehaving-ft
+      emulated-sender: ST3ESTV0QZVAHXA87T3D61XPBTGP9Y5MCCR07EES
+      path: contracts/test-misbehaving-ft.clar
+      clarity-version: 2
+    - transaction-type: emulated-contract-publish
+      contract-name: test-undo-extension
+      emulated-sender: ST3ESTV0QZVAHXA87T3D61XPBTGP9Y5MCCR07EES
+      path: contracts/test-undo-extension.clar
       clarity-version: 2
     epoch: '2.5'

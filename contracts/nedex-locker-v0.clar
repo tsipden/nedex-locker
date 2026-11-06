@@ -14,6 +14,9 @@
 (define-constant ERR-TOO-EARLY u205)
 (define-constant ERR-WRONG-TOKEN u206)
 (define-constant ERR-NOT-BENEFICIARY u207)
+(define-constant ERR-BAD-TRANSFER u209)
+(define-constant ERR-BAD-BENEFICIARY u210)
+(define-constant ERR-NOT-DIRECT u211)
 
 (define-data-var next-lock-id uint u1)
 
@@ -49,10 +52,19 @@
   (let (
       (lock-id (var-get next-lock-id))
       (token-principal (contract-of token))
+      (escrow (as-contract tx-sender))
     )
+    (asserts! (is-eq tx-sender contract-caller) (err ERR-NOT-DIRECT))
     (asserts! (> amount u0) (err ERR-ZERO-AMOUNT))
     (asserts! (> unlock-burn-height burn-block-height) (err ERR-UNLOCK-NOT-FUTURE))
-    (try! (contract-call? token transfer amount tx-sender (as-contract tx-sender) none))
+    (asserts! (not (is-eq beneficiary escrow)) (err ERR-BAD-BENEFICIARY))
+    (let ((bal-before (unwrap! (contract-call? token get-balance escrow) (err ERR-BAD-TRANSFER))))
+      (try! (contract-call? token transfer amount tx-sender escrow none))
+      (let ((bal-after (unwrap! (contract-call? token get-balance escrow) (err ERR-BAD-TRANSFER))))
+        (asserts! (>= bal-after bal-before) (err ERR-BAD-TRANSFER))
+        (asserts! (is-eq (- bal-after bal-before) amount) (err ERR-BAD-TRANSFER))
+      )
+    )
     (map-set locks lock-id {
       depositor: tx-sender,
       beneficiary: beneficiary,
@@ -88,9 +100,15 @@
     (asserts! (is-eq status u0) (err ERR-ALREADY-CLOSED))
     (asserts! (is-eq token-principal (get token lock-data)) (err ERR-WRONG-TOKEN))
     (asserts! (>= burn-block-height (get unlock-burn-height lock-data)) (err ERR-TOO-EARLY))
-    (asserts! (is-eq tx-sender beneficiary) (err ERR-NOT-BENEFICIARY))
+    (asserts! (is-eq contract-caller beneficiary) (err ERR-NOT-BENEFICIARY))
     (map-set locks lock-id (merge lock-data { status: u1 }))
-    (try! (as-contract (contract-call? token transfer amount tx-sender beneficiary none)))
+    (let ((bal-before (unwrap! (contract-call? token get-balance beneficiary) (err ERR-BAD-TRANSFER))))
+      (try! (as-contract (contract-call? token transfer amount tx-sender beneficiary none)))
+      (let ((bal-after (unwrap! (contract-call? token get-balance beneficiary) (err ERR-BAD-TRANSFER))))
+        (asserts! (>= bal-after bal-before) (err ERR-BAD-TRANSFER))
+        (asserts! (is-eq (- bal-after bal-before) amount) (err ERR-BAD-TRANSFER))
+      )
+    )
     (print {
       event: "nedex-locker-claim",
       lock-id: lock-id,
@@ -115,8 +133,8 @@
     (asserts! (is-eq status u0) (err ERR-ALREADY-CLOSED))
     (asserts!
       (or
-        (and (not unlocked) (is-eq tx-sender depositor))
-        (and unlocked (is-eq tx-sender beneficiary))
+        (and (not unlocked) (is-eq contract-caller depositor))
+        (and unlocked (is-eq contract-caller beneficiary))
       )
       (err ERR-UNAUTHORIZED)
     )
